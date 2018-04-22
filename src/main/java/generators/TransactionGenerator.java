@@ -22,7 +22,6 @@ import static generators.TransactionGenerator.RandomDataHelper.getRandomDateTime
 import static generators.TransactionGenerator.RandomDataHelper.getRandomIntWithBound;
 
 public class TransactionGenerator {
-    private static final Logger logger = LogManager.getLogger(TransactionGenerator.class);
     private final List<Tuple<String, Double>> rawItems;
     private IFileWriter fileWriter;
     @Setter private GenerateTransactionCommand command;
@@ -33,19 +32,16 @@ public class TransactionGenerator {
     }
 
     void generateJsons(IFileWriter fileWriter){
-        logger.info("Choose JSON file format.");
         this.fileWriter = fileWriter;
         generateConcreteTransactions(jsonTransactionSupplier(), jsonItemSupplier());
     }
 
     void generateXml(IFileWriter fileWriter){
-        logger.info("Choose XML file format.");
         this.fileWriter = fileWriter;
         generateConcreteTransactions(xmlTransactionSupplier(), xmlItemSupplier());
     }
 
     void generateYaml(IFileWriter fileWriter){
-        logger.info("Choose YAML file format.");
         this.fileWriter = fileWriter;
         generateConcreteTransactions(yamlTransactionSupplier(), yamlItemSupplier());
     }
