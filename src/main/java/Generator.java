@@ -1,4 +1,4 @@
-import generators.TransactionGenerator;
+import generators.TransactionGeneratorManager;
 import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,8 +16,8 @@ public class Generator {
                 .parseCommandLine(commandLineReader.getCmd())
                 .ifPresent( generateTransactionCommand-> {
                     try {
-                        TransactionGenerator transactionGenerator = TransactionGenerator.createTransactionGeneratorAndParseItems(csvFileReader, generateTransactionCommand);
-                        transactionGenerator.generateTransactions();
+                        TransactionGeneratorManager transactionGeneratorManager = TransactionGeneratorManager.setUpTransactionGenerator(csvFileReader, generateTransactionCommand);
+                        transactionGeneratorManager.generateTransactions();
                     } catch (CsvFileReader.InputItemFileNotFoundException e) {
                         logger.error("Couldn't find input file");
                     }
