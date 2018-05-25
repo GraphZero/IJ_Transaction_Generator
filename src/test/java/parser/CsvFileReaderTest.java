@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CsvFileReaderTest {
-    private final String fileName = "testItems.csv";
+    private final String fileName = "E:\\Java Produkcyjna\\Generator\\src\\main\\resources\\items.csv";
 
     @Test
     void shouldReturnItemsFromCsvFileInResourcesFolder(){
@@ -20,7 +20,7 @@ class CsvFileReaderTest {
         // when
         List<Tuple<String, Double>> items = csvFileReader.getItems(fileName);
         // then
-        assertEquals(3, items.size());
+        assertEquals(9, items.size());
     }
 
     @Test

@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import utility.Tuple;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class CommandLineParser {
@@ -22,7 +23,7 @@ public class CommandLineParser {
                         parseRange(commandLine.getOptionValue("itemsQuantity", "1:5")),
                         Long.parseLong(commandLine.getOptionValue("eventsCount", "100")),
                         commandLine.getOptionValue("itemsFile", "/"),
-                        commandLine.getOptionValue("outDir", "/"),
+                        "." + commandLine.getOptionValue("outDir", "/"),
                         parseFileType(commandLine.getOptionValue("format", "JSON"))
                 );
                 logger.info("Successfully converted command.");
@@ -43,7 +44,7 @@ public class CommandLineParser {
     }
 
     protected Tuple<LocalDateTime, LocalDateTime> parseDateRange(String s) {
-        String[] idRange = s.trim().split("-0100:");
+        String[] idRange = s.replaceAll("\"", "").trim().split("-0100:");
         return new Tuple<>(LocalDateTime.parse(idRange[0]), LocalDateTime.parse(idRange[1].replaceAll("-0100", "")));
     }
 

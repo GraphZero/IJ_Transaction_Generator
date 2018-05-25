@@ -20,7 +20,7 @@ public class XmlFileWriter implements IFileWriter<XmlTransaction> {
     @Override
     public void writeValue(String filePath, ArrayList<XmlTransaction> transactionsToSave) {
         try {
-            File file = new File(filePath + ".xml");
+            File file = new File(filePath + "/transactionsXml" + ".xml");
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             transactionsToSave.forEach( transactionsToSave1 -> {
                 try {

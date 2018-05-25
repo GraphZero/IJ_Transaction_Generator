@@ -20,7 +20,7 @@ public class JsonFileWriter implements IFileWriter<JsonTransaction> {
     @Override
     public void writeValue(String filePath, ArrayList<JsonTransaction> transactionsToSave){
         try {
-            objectMapper.writeValue(new File(filePath+ ".json"), transactionsToSave);
+            objectMapper.writeValue(new File(filePath + "/transactionsJson" + ".json"), transactionsToSave);
             logger.info("Saved JSON transactions.");
         } catch (IOException e) {
             logger.error("Couldnt map JSON transactions...");

@@ -6,10 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utility.Tuple;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,30 +14,32 @@ public class CsvFileReader {
     private static final Logger logger = LogManager.getLogger(CsvFileReader.class);
 
     public List<Tuple<String, Double>> getItems(String path){
-        ClassLoader classLoader = getClass().getClassLoader();
         Iterable<CSVRecord> records;
-        Reader in;
-        try {
-            if ( classLoader.getResource(path) != null ){
-                in = new FileReader(classLoader.getResource(path).getFile().replaceAll("%20", " "));
-                try {
-                    records = CSVFormat
-                            .newFormat(',')
-                            .withHeader("name", "price")
-                            .parse(in);
-                    logger.info("Successfully parsed items from csv file.");
-                    return returnItems(records);
-                } catch (IOException e) {
-                    logger.error("Couldn't parse items!");
-                    throw new InputParseFileException();
-                }
-            } else{
-                logger.error("Couldn't find item file.");
-                throw new InputItemFileNotFoundException();
+        Reader in = getFileReader("." + path);
+        if ( in != null ){
+            try {
+                records = CSVFormat
+                        .newFormat(',')
+                        .withHeader("name", "price")
+                        .parse(in);
+                logger.info("Successfully parsed items from csv file.");
+                return returnItems(records);
+            } catch (IOException e) {
+                logger.error("Couldn't parse items!");
+                throw new InputParseFileException();
             }
+        } else{
+            logger.error("Wrong item path");
+            return new ArrayList<>();
+        }
+    }
+
+    private FileReader getFileReader(String path){
+        try {
+            return new FileReader(path);
         } catch (FileNotFoundException e) {
-            logger.error("Couldn't find item file!");
-            throw new InputItemFileNotFoundException();
+            logger.error("Couldn't find input file.");
+            return null;
         }
     }
 

@@ -20,7 +20,7 @@ public class YamlFileWriter implements IFileWriter<YamlTransaction> {
     @Override
     public void writeValue(String filePath, ArrayList<YamlTransaction> transactionsToSave){
         try {
-            objectMapper.writeValue(new File(filePath+ ".yaml"), transactionsToSave);
+            objectMapper.writeValue(new File(filePath + "/transactionsYaml" + ".yaml"), transactionsToSave);
             logger.info("Saved YAML transactions.");
         } catch (IOException e) {
             logger.error("Couldnt map YAML transactions...");

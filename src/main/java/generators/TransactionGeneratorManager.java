@@ -2,10 +2,10 @@ package generators;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import readers.CsvFileReader;
+import utility.Tuple;
 import writers.json.JsonFileWriter;
 import writers.xml.XmlFileWriter;
 import writers.xml.XmlItem;
@@ -14,17 +14,28 @@ import writers.yaml.YamlFileWriter;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import java.util.List;
 
 public class TransactionGeneratorManager {
     private static final Logger logger = LogManager.getLogger(TransactionGeneratorManager.class);
     private final TransactionGenerator transactionGenerator;
+    private boolean isReadyToCreateTransactions = false;
 
     @Setter
     private GenerateTransactionCommand command;
 
     private TransactionGeneratorManager(CsvFileReader csvFileReader, GenerateTransactionCommand command) {
         this.command = command;
-        this.transactionGenerator = new TransactionGenerator(csvFileReader.getItems(command.getItemsFilePath()), command);
+        List<Tuple<String, Double>> items = csvFileReader.getItems(command.getItemsFilePath());
+        if ( items.size() > 0  ){
+            this.transactionGenerator = new TransactionGenerator(items, command);
+            isReadyToCreateTransactions = true;
+            logger.info("Transaction generator is ready.");
+        } else{
+            this.transactionGenerator = null;
+            isReadyToCreateTransactions = false;
+            logger.warn("Transaction generator couldn't parse items, it won't generate transactions.");
+        }
     }
 
     public static TransactionGeneratorManager setUpTransactionGenerator(CsvFileReader csvFileReader, GenerateTransactionCommand command) {
@@ -32,29 +43,33 @@ public class TransactionGeneratorManager {
     }
 
     public void generateTransactions(){
-        switch (command.getFileType()){
-            case JSON:
-            default:
-                generateJsons();
-                break;
+        if ( isReadyToCreateTransactions ){
+            switch (command.getFileType()){
+                case JSON:
+                default:
+                    generateJsons();
+                    break;
 
-            case XML:
-                generateXml();
-                break;
+                case XML:
+                    generateXml();
+                    break;
 
-            case YAML:
-                generateYaml();
-                break;
+                case YAML:
+                    generateYaml();
+                    break;
+            }
+        } else{
+            logger.info("Transaction generator is not ready!");
         }
     }
 
     private void generateJsons(){
-        logger.info("Choose JSON file format.");
+        logger.info("Chose JSON file format.");
         transactionGenerator.generateJsons(new JsonFileWriter(new ObjectMapper()));
     }
 
     private void generateXml(){
-        logger.info("Choose XML file format.");
+        logger.info("Chose XML file format.");
         JAXBContext jaxbContext;
         try {
             jaxbContext = JAXBContext.newInstance(XmlTransaction.class, Transaction.class, XmlItem.class, Item.class);
@@ -66,7 +81,7 @@ public class TransactionGeneratorManager {
     }
 
     private void generateYaml(){
-        logger.info("Choose YAML file format.");
+        logger.info("Chose YAML file format.");
         transactionGenerator.generateYaml(new YamlFileWriter(new ObjectMapper()));
     }
 
