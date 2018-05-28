@@ -20,7 +20,7 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="Generator" level="info" additivity="true">
+        <Logger name="generator.Generator" level="info" additivity="true">
             <appender-ref ref="fileLogger" level="info" />
         </Logger>
         <Logger name="CsvFileReader" level="info" additivity="true">
@@ -29,7 +29,7 @@
         <Logger name="CommandLineParser" level="info" additivity="true">
             <appender-ref ref="console" level="info" />
         </Logger>
-        <Logger name="generators.TransactionGenerator" level="info" additivity="true">
+        <Logger name="generator.generators.TransactionGenerator" level="info" additivity="true">
             <appender-ref ref="console" level="info" />
         </Logger>
         <Logger name="JsonFileWriter" level="error" additivity="true">

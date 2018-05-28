@@ -4,7 +4,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import readers.CommandLineReader;
+import generator.readers.CommandLineReader;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

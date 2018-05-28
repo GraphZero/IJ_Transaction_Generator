@@ -1,17 +1,16 @@
 package parser;
 
 import org.junit.jupiter.api.Test;
-import readers.CsvFileReader;
-import utility.Tuple;
+import generator.readers.items.CsvFileReader;
+import generator.utility.Tuple;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CsvFileReaderTest {
-    private final String fileName = "E:\\Java Produkcyjna\\Generator\\src\\main\\resources\\items.csv";
+    private final String fileName = "E:\\Java Produkcyjna\\generator.Generator\\src\\main\\resources\\items.csv";
 
     @Test
     void shouldReturnItemsFromCsvFileInResourcesFolder(){
