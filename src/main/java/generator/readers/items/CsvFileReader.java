@@ -36,7 +36,7 @@ public class CsvFileReader implements ItemsReader{
         }
     }
 
-    private FileReader getFileReader(String path){
+    FileReader getFileReader(String path){
         try {
             return new FileReader(path);
         } catch (FileNotFoundException e) {

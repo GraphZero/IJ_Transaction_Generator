@@ -21,7 +21,7 @@ class HttpCsvFileReaderTest {
         httpCsvFileReader = new HttpCsvFileReader();
         // when
         // then
-        httpCsvFileReader.getXmlItems("");
+        //httpCsvFileReader.getXmlItems("");
     }
 
     @Test
