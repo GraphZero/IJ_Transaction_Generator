@@ -24,6 +24,7 @@ class CsvFileReaderTest {
         List<Tuple<String, Double>> items = csvFileReader.getItems(fileName);
         // then
         assertEquals(1, items.size());
+
     }
 
     @Test
