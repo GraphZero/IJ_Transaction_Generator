@@ -7,6 +7,8 @@ import generator.writers.IFileWriter;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class JsonFileWriter implements IFileWriter<JsonTransaction> {
@@ -20,6 +22,9 @@ public class JsonFileWriter implements IFileWriter<JsonTransaction> {
     @Override
     public void writeValue(String filePath, ArrayList<JsonTransaction> transactionsToSave){
         try {
+            if ( !Files.exists(Paths.get(filePath))){
+                Files.createDirectory(Paths.get(filePath));
+            }
             objectMapper.writeValue(new File(filePath + "/transactionsJson" + ".json"), transactionsToSave);
             logger.info("Saved JSON transactions.");
         } catch (IOException e) {
