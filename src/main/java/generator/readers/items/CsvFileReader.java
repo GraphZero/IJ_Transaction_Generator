@@ -17,7 +17,7 @@ public class CsvFileReader implements ItemsReader{
 
     public List<Tuple<String, Double>> getItems(String path){
         Iterable<CSVRecord> records;
-        Reader in = getFileReader("." + path);
+        Reader in = getFileReader(path);
         if ( in != null ){
             try {
                 records = CSVFormat

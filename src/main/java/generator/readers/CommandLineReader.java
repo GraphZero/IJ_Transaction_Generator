@@ -22,6 +22,10 @@ public class CommandLineReader {
         options.addOption("eventsCount", true, "number of transactions");
         options.addOption("outDir", true, "destination file");
         options.addOption("format", true, "format of file");
+
+        options.addOption("broker", true, "is broker needed");
+        options.addOption("queue", true, "is queue needed");
+        options.addOption("topic", true, "is topic needed");
         try{
             cmd = parser.parse( options, args);
         } catch(UnrecognizedOptionException e){

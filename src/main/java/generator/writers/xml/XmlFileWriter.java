@@ -7,6 +7,10 @@ import generator.writers.IFileWriter;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class XmlFileWriter implements IFileWriter<XmlTransaction> {
@@ -20,7 +24,10 @@ public class XmlFileWriter implements IFileWriter<XmlTransaction> {
     @Override
     public void writeValue(String filePath, ArrayList<XmlTransaction> transactionsToSave) {
         try {
-            File file = new File(filePath + "/transactionsXml" + ".xml");
+            if ( !Files.exists(Paths.get(filePath))){
+                Files.createDirectory(Paths.get(filePath));
+            }
+            File file = new File(filePath + "/transactionsXml.xml");
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             transactionsToSave.forEach( transactionsToSave1 -> {
                 try {
@@ -31,7 +38,7 @@ public class XmlFileWriter implements IFileWriter<XmlTransaction> {
                 }
             });
             logger.info("Successfully parsed items into XML file.");
-        } catch (JAXBException e) {
+        } catch (JAXBException | IOException e) {
             e.printStackTrace();
             logger.error("JAXB went nuts! " + e.getMessage());
         }

@@ -26,7 +26,7 @@ public class Parser {
                         parseRange(commandLine.getOptionValue("itemsQuantity", "1:5")),
                         Long.parseLong(commandLine.getOptionValue("eventsCount", "100")),
                         commandLine.getOptionValue("itemsFile", "/"),
-                        "." + commandLine.getOptionValue("outDir", "/"),
+                        commandLine.getOptionValue("outDir", "/"),
                         parseFileType(commandLine.getOptionValue("format", "JSON"))
                 );
                 logger.info("Successfully converted command.");

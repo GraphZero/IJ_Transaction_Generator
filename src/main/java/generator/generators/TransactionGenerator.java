@@ -113,7 +113,8 @@ public class TransactionGenerator {
         private static final Random r = new Random();
 
         public static int getRandomIntWithBound(int lower, int upper) {
-            return r.nextInt(upper - lower) + lower;
+
+            return r.nextInt(upper - lower > 0 ? upper - lower : 1 ) + lower;
         }
 
         public static LocalDateTime getRandomDateTime(Tuple<LocalDateTime, LocalDateTime> ldtt) {
