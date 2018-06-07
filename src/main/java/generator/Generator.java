@@ -2,6 +2,7 @@ package generator;
 
 import generator.generators.file.FileTransactionGeneratorManager;
 import generator.readers.CommandLineReader;
+import generator.readers.ConfigurationReader;
 import generator.readers.Parser;
 import generator.readers.items.CsvFileReader;
 import org.apache.commons.cli.ParseException;
@@ -10,25 +11,31 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.IOException;
+
 @SpringBootApplication
 public class Generator {
     private static final Logger logger = LogManager.getLogger(Generator.class);
 
     public static void main(String[] args) throws ParseException {
         CsvFileReader csvFileReader = new CsvFileReader();
-        CommandLineReader commandLineReader = CommandLineReader.readCommandLines(args);
-
-        new Parser()
-                .parseCommandLine(commandLineReader.getCmd())
-                .ifPresent( generateTransactionCommand-> {
-                    try {
+        CommandLineReader commandLineReader = null;
+        try {
+            commandLineReader = CommandLineReader.readCommandLines(ConfigurationReader.getCommands());
+            new Parser()
+                    .parseCommandLine(commandLineReader.getCmd())
+                    .ifPresent( generateTransactionCommand-> {
+                        try {
                             FileTransactionGeneratorManager transactionGeneratorManager
                                     = FileTransactionGeneratorManager.setUpTransactionGenerator(csvFileReader, generateTransactionCommand);
                             transactionGeneratorManager.generateTransactions();
                         } catch (CsvFileReader.InputItemFileNotFoundException e) {
-                           logger.error("Couldn't find input file");
+                            logger.error("Couldn't find input file");
                         }
-            });
+                    });
+        } catch (IOException e) {
+            logger.error("Couldn't find settings file");
+        }
         //SpringApplication.run(Generator.class, args);
     }
 
