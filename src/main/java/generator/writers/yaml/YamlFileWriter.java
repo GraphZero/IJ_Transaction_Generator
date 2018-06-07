@@ -23,7 +23,7 @@ public class YamlFileWriter implements IFileWriter<YamlTransaction> {
     public void writeValue(String filePath, ArrayList<YamlTransaction> transactionsToSave){
         try {
             if ( !Files.exists(Paths.get(filePath))){
-                Files.createDirectory(Paths.get(filePath));
+                Files.createDirectories(Paths.get(filePath));
             }
             objectMapper.writeValue(new File(filePath + "/transactionsYaml" + ".yaml"), transactionsToSave);
             logger.info("Saved YAML transactions.");

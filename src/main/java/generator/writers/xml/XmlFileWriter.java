@@ -25,7 +25,7 @@ public class XmlFileWriter implements IFileWriter<XmlTransaction> {
     public void writeValue(String filePath, ArrayList<XmlTransaction> transactionsToSave) {
         try {
             if ( !Files.exists(Paths.get(filePath))){
-                Files.createDirectory(Paths.get(filePath));
+                Files.createDirectories(Paths.get(filePath));
             }
             File file = new File(filePath + "/transactionsXml.xml");
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);

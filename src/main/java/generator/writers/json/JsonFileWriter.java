@@ -23,7 +23,7 @@ public class JsonFileWriter implements IFileWriter<JsonTransaction> {
     public void writeValue(String filePath, ArrayList<JsonTransaction> transactionsToSave){
         try {
             if ( !Files.exists(Paths.get(filePath))){
-                Files.createDirectory(Paths.get(filePath));
+                Files.createDirectories(Paths.get(filePath));
             }
             objectMapper.writeValue(new File(filePath + "/transactionsJson" + ".json"), transactionsToSave);
             logger.info("Saved JSON transactions.");
