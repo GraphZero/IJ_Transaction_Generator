@@ -29,7 +29,7 @@ public class Generator {
                            logger.error("Couldn't find input file");
                         }
             });
-        SpringApplication.run(Generator.class, args);
+        //SpringApplication.run(Generator.class, args);
     }
 
 }
