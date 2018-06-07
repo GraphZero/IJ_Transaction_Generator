@@ -1,6 +1,7 @@
 package generator.generators.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import generator.commands.GenerateTransactionToFileCommand;
 import generator.generators.Item;
 import generator.generators.Transaction;
@@ -73,7 +74,10 @@ public class FileTransactionGeneratorManager {
     private void generateJsons(){
         logger.info("Chose JSON file format.");
         fileWriter = new JsonFileWriter(new ObjectMapper());
-        fileWriter.writeValue(command.getOutFilePath(), transactionGenerator.generateJsons(items, command));
+        for (int i = 0; i < command.getEventsCount(); i++) {
+            fileWriter.writeValue(command.getOutFilePath(), transactionGenerator.generateJsons(items, command), i);
+        }
+
     }
 
     private void generateXml(){
@@ -82,7 +86,10 @@ public class FileTransactionGeneratorManager {
         try {
             jaxbContext = JAXBContext.newInstance(XmlTransaction.class, Transaction.class, XmlItem.class, Item.class);
             fileWriter = new XmlFileWriter(jaxbContext.createMarshaller());
-            fileWriter.writeValue(command.getOutFilePath(), transactionGenerator.generateXml(items, command));
+            for (int i = 0; i < command.getEventsCount(); i++) {
+                fileWriter.writeValue(command.getOutFilePath(), transactionGenerator.generateXml(items, command), i);
+            }
+
         } catch (JAXBException e) {
             logger.error("Couldn't initialize jaxb context.");
             e.printStackTrace();
@@ -91,8 +98,10 @@ public class FileTransactionGeneratorManager {
 
     private void generateYaml(){
         logger.info("Chose YAML file format.");
-        fileWriter = new YamlFileWriter(new ObjectMapper());
-        fileWriter.writeValue(command.getOutFilePath(), transactionGenerator.generateYaml(items, command));
+        fileWriter = new YamlFileWriter(new ObjectMapper(new YAMLFactory()));
+        for (int i = 0; i < command.getEventsCount(); i++) {
+            fileWriter.writeValue(command.getOutFilePath(), transactionGenerator.generateYaml(items, command), i);
+        }
     }
 
 

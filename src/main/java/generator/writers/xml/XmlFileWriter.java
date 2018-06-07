@@ -22,12 +22,12 @@ public class XmlFileWriter implements IFileWriter<XmlTransaction> {
     }
 
     @Override
-    public void writeValue(String filePath, ArrayList<XmlTransaction> transactionsToSave) {
+    public void writeValue(String filePath, ArrayList<XmlTransaction> transactionsToSave, int id) {
         try {
             if ( !Files.exists(Paths.get(filePath))){
                 Files.createDirectories(Paths.get(filePath));
             }
-            File file = new File(filePath + "/transactionsXml.xml");
+            File file = new File(filePath + "/transactionsXml" + id + ".xml");
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             transactionsToSave.forEach( transactionsToSave1 -> {
                 try {

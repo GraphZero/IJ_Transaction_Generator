@@ -43,16 +43,14 @@ public class TransactionGenerator {
 
     private <T extends Transaction, E extends Item> ArrayList<T> generateConcreteTransactions(TransactionSupplier<T, E> transactionSupplier, BiFunction<Integer, Integer, E> itemsSupplier) {
         ArrayList<T> transactionsToSave = new ArrayList<>();
-        for (int i = 1; i <= command.getEventsCount(); i++) {
-            transactionsToSave.add(generateSingleTransaction (i, transactionSupplier, itemsSupplier));
-        }
+        transactionsToSave.add(generateSingleTransaction ( transactionSupplier, itemsSupplier));
         return transactionsToSave;
     }
 
-    private <T extends Transaction, E extends Item> T generateSingleTransaction(int id, TransactionSupplier<T, E> transactionSupplier, BiFunction<Integer, Integer, E> itemsSupplier) {
+    private <T extends Transaction, E extends Item> T generateSingleTransaction(TransactionSupplier<T, E> transactionSupplier, BiFunction<Integer, Integer, E> itemsSupplier) {
         int quantityOfItemsGenerated = getRandomIntWithBound(command.getGeneratedItemsRange().getFirst(), command.getGeneratedItemsRange().getSecond());
         ArrayList<E> items = generateItems(quantityOfItemsGenerated, itemsSupplier);
-        return transactionSupplier.supply(id, items);
+        return transactionSupplier.supply(items);
     }
 
     private <T extends Item> ArrayList<T> generateItems(int quantity, BiFunction<Integer, Integer, T> itemsSupplier) {
@@ -70,8 +68,7 @@ public class TransactionGenerator {
     }
 
     private TransactionSupplier<JsonTransaction, JsonItem> jsonTransactionSupplier(){
-        return (id, items) -> new JsonTransaction(
-                id,
+        return (items) -> new JsonTransaction(
                 getRandomDateTime(command.getDateRange()).toString(),
                 getRandomIntWithBound(command.getCustomerIdRange().getFirst(), command.getCustomerIdRange().getSecond()),
                 items,
@@ -83,8 +80,7 @@ public class TransactionGenerator {
     }
 
     private TransactionSupplier<XmlTransaction, XmlItem> xmlTransactionSupplier(){
-        return (id, items) -> new XmlTransaction(
-                id,
+        return (items) -> new XmlTransaction(
                 getRandomDateTime(command.getDateRange()).toString(),
                 getRandomIntWithBound(command.getCustomerIdRange().getFirst(), command.getCustomerIdRange().getSecond()),
                 items,
@@ -96,8 +92,7 @@ public class TransactionGenerator {
     }
 
     private TransactionSupplier<YamlTransaction, YamlItem> yamlTransactionSupplier(){
-        return (id, items) -> new YamlTransaction(
-                id,
+        return (items) -> new YamlTransaction(
                 getRandomDateTime(command.getDateRange()).toString(),
                 getRandomIntWithBound(command.getCustomerIdRange().getFirst(), command.getCustomerIdRange().getSecond()),
                 items,
@@ -106,7 +101,7 @@ public class TransactionGenerator {
 
     @FunctionalInterface
     interface TransactionSupplier<T extends Transaction, E extends Item>{
-        T supply(int id, ArrayList<E> items );
+        T supply(ArrayList<E> items );
     }
 
     static class RandomDataHelper {

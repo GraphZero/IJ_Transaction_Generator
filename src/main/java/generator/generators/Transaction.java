@@ -12,7 +12,6 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Transaction {
-    protected long id;
     protected String timeStamp;
     protected long customer_id;
     protected ArrayList<? extends Item> jsonItems;

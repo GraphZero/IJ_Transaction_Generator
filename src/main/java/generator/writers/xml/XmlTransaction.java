@@ -14,8 +14,8 @@ import java.util.ArrayList;
 @Setter
 public class XmlTransaction extends Transaction {
 
-    public XmlTransaction(long id, String timeStamp, long customer_id, ArrayList<XmlItem> items, double sum) {
-        super(id, timeStamp, customer_id, items, sum);
+    public XmlTransaction(String timeStamp, long customer_id, ArrayList<XmlItem> items, double sum) {
+        super(timeStamp, customer_id, items, sum);
     }
 
 
