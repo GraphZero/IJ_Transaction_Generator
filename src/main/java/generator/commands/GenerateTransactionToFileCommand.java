@@ -21,5 +21,15 @@ public class GenerateTransactionToFileCommand {
     private String outFilePath;
     private FileType fileType;
 
+    public GenerateTransactionResponseCommand toResponseCommand(){
+        return GenerateTransactionResponseCommand.builder()
+                .customerIdRange(customerIdRange)
+                .dateRange(dateRange)
+                .eventsCount(eventsCount)
+                .generatedItemsRange(generatedItemsRange)
+                .itemsQuantityRange(itemsQuantityRange)
+                .fileType(fileType)
+                .build();
+    }
 }
 

@@ -2,8 +2,10 @@ package generator.readers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.PropertySource;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -58,6 +60,19 @@ public class ConfigurationManager {
         command[15] = mainProperties.getProperty("format");
         logger.info("Successfully parsed config file.");
         return command;
+    }
+
+    public static void modifyJMSAddress(String url) throws IOException {
+        logger.info("Changing adress to: " + url);
+        FileInputStream in = new FileInputStream("src/main/resources/application.properties");
+        Properties props = new Properties();
+        props.load(in);
+        in.close();
+
+        FileOutputStream out = new FileOutputStream("src/main/resources/application.properties");
+        props.setProperty("spring.activemq.broker-url", url);
+        props.store(out, null);
+        out.close();
     }
 
 }

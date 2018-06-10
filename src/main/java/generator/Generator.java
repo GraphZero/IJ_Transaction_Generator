@@ -1,5 +1,6 @@
 package generator;
 
+import generator.commands.GenerateTransactionToFileCommand;
 import generator.generators.file.FileTransactionGeneratorManager;
 import generator.readers.CommandLineReader;
 import generator.readers.ConfigurationManager;
@@ -18,12 +19,15 @@ import org.springframework.jms.support.converter.MessageType;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.io.IOException;
+import java.util.List;
 
 @SpringBootApplication
 @EnableJms
 @EnableScheduling
 public class Generator {
     private static final Logger logger = LogManager.getLogger(Generator.class);
+    public static String ORDER_TOPIC = "transaction-topics";
+    public static GenerateTransactionToFileCommand generateTransactionToFileCommand;
 
     @Bean
     public MessageConverter jacksonJmsMessageConverter() {
@@ -33,12 +37,12 @@ public class Generator {
         return converter;
     }
 
-
     public static void generateTransactions(CommandLineReader commandLineReader, CsvFileReader csvFileReader){
         new Parser()
                 .parseCommandLine(commandLineReader.getCmd())
                 .ifPresent( generateTransactionCommand-> {
                     try {
+                        generateTransactionToFileCommand = generateTransactionCommand;
                         FileTransactionGeneratorManager transactionGeneratorManager
                                 = FileTransactionGeneratorManager.setUpTransactionGenerator(csvFileReader, generateTransactionCommand);
                         transactionGeneratorManager.generateTransactions();
@@ -48,7 +52,8 @@ public class Generator {
                 });
     }
 
-    public static void main(String[] args) throws ParseException {
+
+    public static void main(String[] args) throws Exception {
         CsvFileReader csvFileReader = new CsvFileReader();
         CommandLineReader commandLineReader = null;
 
@@ -62,6 +67,12 @@ public class Generator {
         } catch (IOException e) {
             logger.error("Couldn't find settings file");
         }
+
+        // JMS
+        List<String> config = Parser.getJmsConfigurationOptions(commandLineReader.getCmd());
+        ConfigurationManager.modifyJMSAddress(config.get(0));
+        ORDER_TOPIC = config.get(1);
+
         SpringApplication.run(Generator.class, args);
     }
 

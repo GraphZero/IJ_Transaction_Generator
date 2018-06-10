@@ -58,7 +58,7 @@ public class Parser {
         }
     }
 
-    public List<String> getJmsConfigurationOptions(CommandLine commandLine1){
+    public static List<String> getJmsConfigurationOptions(CommandLine commandLine1){
         return Optional.ofNullable(commandLine1).map(commandLine -> {
             List<String> options = new ArrayList<>();
             options.add(commandLine1.getOptionValue("broker", "tcp://192.168.99.100:32768/"));

@@ -60,9 +60,15 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.4'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.4'
 
-//    compile("org.springframework.boot:spring-boot-starter-activemq")
-//    // https://mvnrepository.com/artifact/org.apache.activemq/activemq-all
-//    compile group: 'org.apache.activemq', name: 'activemq-all', version: '5.4.2'
+    compile("org.springframework.boot:spring-boot-starter-activemq")
+    // https://mvnrepository.com/artifact/org.apache.activemq/activemq-core
+    compile group: 'org.apache.activemq', name: 'activemq-core', version: '5.7.0'
+
+    // https://mvnrepository.com/artifact/org.apache.activemq/activemq-broker
+    compile group: 'org.apache.activemq', name: 'activemq-broker', version: '5.14.3'
+
+    // https://mvnrepository.com/artifact/org.apache.activemq/activemq-client
+    compile group: 'org.apache.activemq', name: 'activemq-client', version: '5.14.3'
 
 
     compile("org.springframework.boot:spring-boot-starter-web")
