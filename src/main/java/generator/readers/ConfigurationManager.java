@@ -5,11 +5,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Properties;
 
-public class ConfigurationReader {
-    private final static Logger logger = LoggerFactory.getLogger(ConfigurationReader.class);
+public class ConfigurationManager {
+    private final static Logger logger = LoggerFactory.getLogger(ConfigurationManager.class);
     private final static int numberOfConfigurationOptions = 16;
 
     public static String[] getCommands() throws IOException {

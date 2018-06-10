@@ -10,6 +10,8 @@ import generator.utility.Tuple;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,6 +56,17 @@ public class Parser {
             logger.error("Wrong command parameters!");
             return null;
         }
+    }
+
+    public List<String> getJmsConfigurationOptions(CommandLine commandLine1){
+        return Optional.ofNullable(commandLine1).map(commandLine -> {
+            List<String> options = new ArrayList<>();
+            options.add(commandLine1.getOptionValue("broker", "tcp://192.168.99.100:32768/"));
+            options.add(commandLine1.getOptionValue("queue", "transactions-queue"));
+            options.add(commandLine1.getOptionValue("topic", "transaction-topics"));
+            logger.info("Successfully converted command.");
+            return options;
+        }).orElseGet(ArrayList::new);
     }
 
     protected Tuple<Integer, Integer> parseRange(String s) {
